@@ -37,3 +37,11 @@ I use native controls where possible, such as a standard select for sorting. Sin
 **4. Decision:** I chose Angular Material and its built-in components instead of creating the UI components from scratch.
 **Alternative rejected:** Building custom components or using another UI library such as PrimeNG or NG-Zorro.
 **Why:** Angular Material integrates well with Angular and provides accessible components out of the box, including keyboard support, ARIA attributes, and focus handling. This saves development time while still meeting the keyboard-only and small-screen requirements, which was important given the limited implementation time.
+
+## Section 3: Deployment & CI/CD
+
+**Public URL:** https://clinic-stock-console.vercel.app/
+
+**Deploy trigger:** Pushes/merges to `main` (Vercel auto-deploys on every push to this branch via its GitHub integration).
+
+**CI pipeline:** GitHub Actions, runs on every pull request into `main`. Checks: Prettier formatting (`format:check`), ESLint (`lint`), commit message format (commitlint, Conventional Commits), and the test suite. Any failing check blocks the PR from being merged.

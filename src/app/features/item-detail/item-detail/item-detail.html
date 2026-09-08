@@ -1,0 +1,53 @@
+<div class="item-detail-container">
+  @if (isLoading()) {
+    <div class="state-message" role="status">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading item…</p>
+    </div>
+  } @else if (loadError()) {
+    <div class="state-message" role="alert">
+      <p>{{ loadError() }}</p>
+      <button mat-raised-button color="primary" (click)="onRetryLoad()">Retry</button>
+    </div>
+  } @else if (product(); as item) {
+    <a routerLink="/items">&larr; Back to list</a>
+
+    <h1>{{ item.title }}</h1>
+    <img [src]="item.thumbnail" [alt]="item.title" />
+    <p>{{ item.description }}</p>
+    <p>Category: {{ item.category }}</p>
+    <p>Price: {{ item.price | currency }}</p>
+
+    @if (!isEditing()) {
+      <p>Stock: {{ item.stock }}</p>
+      <button mat-raised-button color="primary" (click)="startEdit()">Correct stock</button>
+    } @else {
+      <mat-form-field appearance="outline">
+        <mat-label>New stock count</mat-label>
+        <input matInput type="number" [formControl]="stockControl" min="0" />
+      </mat-form-field>
+
+      @if (saveError()) {
+        <p class="error-message" role="alert">{{ saveError() }}</p>
+      }
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onSave()"
+        [disabled]="stockControl.invalid || isSaving()"
+      >
+        @if (isSaving()) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Save
+        }
+      </button>
+      <button mat-button (click)="cancelEdit()" [disabled]="isSaving()">Cancel</button>
+
+      <p class="mock-api-note">
+        Note: API Limitations — corrections will not persist after a page reload.
+      </p>
+    }
+  }
+</div>

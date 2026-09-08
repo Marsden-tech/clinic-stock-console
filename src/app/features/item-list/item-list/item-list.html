@@ -1,0 +1,75 @@
+<div class="item-list-container">
+  <aside class="filters-sidebar">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Search</mat-label>
+      <input
+        matInput
+        [formControl]="searchControl"
+        [disabled]="isCategoryActive"
+        placeholder="Search items"
+      />
+      @if (isCategoryActive) {
+        <mat-hint>Clear category to search</mat-hint>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Category</mat-label>
+      <mat-select [value]="currentCategory()" (selectionChange)="onCategoryChange($event.value)">
+        <mat-option value="">All categories</mat-option>
+        @for (category of categories(); track category.slug) {
+          <mat-option [value]="category.slug">{{ category.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Sort by</mat-label>
+      <mat-select [value]="currentSortBy()" (selectionChange)="onSortChange($event.value)">
+        <mat-option value="">Default</mat-option>
+        <mat-option value="title">Title</mat-option>
+        <mat-option value="price">Price</mat-option>
+        <mat-option value="stock">Stock</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </aside>
+
+  <main class="results-area">
+    @if (isLoading()) {
+      <div class="state-message" role="status">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading items…</p>
+      </div>
+    } @else if (error()) {
+      <div class="state-message" role="alert">
+        <p>{{ error() }}</p>
+        <button mat-raised-button color="primary" (click)="onRetry()">Retry</button>
+      </div>
+    } @else if (products().length === 0) {
+      <div class="state-message" role="status">
+        <p>No items found.</p>
+      </div>
+    } @else {
+      <ul class="item-grid">
+        @for (product of products(); track product.id) {
+          <li>
+            <a [routerLink]="['/items', product.id]" class="item-card">
+              <img [src]="product.thumbnail" [alt]="product.title" />
+              <h3>{{ product.title }}</h3>
+              <p>{{ product.category }}</p>
+              <p>Stock: {{ product.stock }}</p>
+            </a>
+          </li>
+        }
+      </ul>
+
+      <mat-paginator
+        [length]="total()"
+        [pageSize]="pageSize"
+        [pageIndex]="currentPage() - 1"
+        [hidePageSize]="true"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
+    }
+  </main>
+</div>

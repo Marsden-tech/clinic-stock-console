@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Auth } from '../../../core/auth/auth';
@@ -23,21 +23,18 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './login.scss',
 })
 export class Login {
+  private fb = inject(FormBuilder);
+  private authService = inject(Auth);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   isSubmitting = signal(false);
   errorMessage = signal<string | null>(null);
-  form!: ReturnType<FormBuilder['group']>;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: Auth,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
-    this.form = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-  }
+  form = this.fb.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+  });
 
   onSubmit(): void {
     if (this.form.invalid) {

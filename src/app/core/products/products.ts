@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -37,8 +37,7 @@ export interface ProductQuery {
 @Injectable({ providedIn: 'root' })
 export class Products {
   private readonly baseUrl = 'https://dummyjson.com/products';
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   list(query: ProductQuery): Observable<ProductsResponse> {
     let params = new HttpParams().set('limit', query.limit).set('skip', query.skip);

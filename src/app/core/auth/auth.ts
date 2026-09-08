@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
@@ -19,14 +19,10 @@ const REFRESH_TOKEN_KEY = 'refreshToken';
 @Injectable({ providedIn: 'root' })
 export class Auth {
   private readonly baseUrl = 'https://dummyjson.com/auth';
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
-  // signal so components can reactively check auth state without subscribing
   isAuthenticated = signal<boolean>(this.hasStoredToken());
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
 
   login(username: string, password: string): Observable<LoginResponse> {
     return this.http

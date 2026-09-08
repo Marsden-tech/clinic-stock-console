@@ -1,8 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { Products } from './products';
 
@@ -26,9 +23,7 @@ describe('Products', () => {
   it('calls the plain products endpoint when no category or search is given', () => {
     service.list({ limit: 12, skip: 0 }).subscribe();
 
-    const req = httpMock.expectOne(
-      (request) => request.url === 'https://dummyjson.com/products',
-    );
+    const req = httpMock.expectOne((request) => request.url === 'https://dummyjson.com/products');
     expect(req.request.params.get('limit')).toBe('12');
     expect(req.request.params.get('skip')).toBe('0');
 

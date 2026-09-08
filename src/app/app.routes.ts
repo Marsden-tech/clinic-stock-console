@@ -9,8 +9,7 @@ export const routes: Routes = [
   {
     path: 'items',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/item-list/item-list/item-list').then((m) => m.ItemList),
+    loadComponent: () => import('./features/item-list/item-list/item-list').then((m) => m.ItemList),
   },
   {
     path: 'items/:id',

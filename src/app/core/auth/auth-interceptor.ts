@@ -12,9 +12,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   // attach the token to every outgoing request, if we have one
   const token = sessionStorage.getItem(ACCESS_TOKEN_KEY);
-  const authReq = token
-    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
-    : req;
+  const authReq = token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
 
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {

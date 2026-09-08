@@ -35,10 +35,7 @@ export class ItemDetail implements OnInit {
   isSaving = signal(false);
   saveError = signal<string | null>(null);
 
-  stockControl = new FormControl<number | null>(null, [
-    Validators.required,
-    Validators.min(0),
-  ]);
+  stockControl = new FormControl<number | null>(null, [Validators.required, Validators.min(0)]);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

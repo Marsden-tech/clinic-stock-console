@@ -41,9 +41,7 @@ export class Products {
   constructor(private http: HttpClient) {}
 
   list(query: ProductQuery): Observable<ProductsResponse> {
-    let params = new HttpParams()
-      .set('limit', query.limit)
-      .set('skip', query.skip);
+    let params = new HttpParams().set('limit', query.limit).set('skip', query.skip);
 
     if (query.sortBy) {
       params = params.set('sortBy', query.sortBy).set('order', query.order ?? 'asc');
@@ -51,10 +49,9 @@ export class Products {
 
     if (query.category) {
       // category uses a different path shape than plain listing
-      return this.http.get<ProductsResponse>(
-        `${this.baseUrl}/category/${query.category}`,
-        { params },
-      );
+      return this.http.get<ProductsResponse>(`${this.baseUrl}/category/${query.category}`, {
+        params,
+      });
     }
 
     if (query.q) {

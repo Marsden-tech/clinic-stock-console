@@ -33,7 +33,7 @@ export class Auth {
       .post<LoginResponse>(`${this.baseUrl}/login`, {
         username,
         password,
-        expiresInMins: 1, 
+        expiresInMins: 1,
       })
       .pipe(
         tap((response) => {

@@ -113,3 +113,37 @@ I use native controls where possible, such as a standard select for sorting. Sin
 **Deploy trigger:** Pushes/merges to `main` (Vercel auto-deploys on every push to this branch via its GitHub integration).
 
 **CI pipeline:** GitHub Actions, runs on every pull request into `main`. Checks: Prettier formatting (`format:check`), ESLint (`lint`), commit message format (commitlint, Conventional Commits), and the test suite. Any failing check blocks the PR from being merged.
+
+## Section 4: Reflection
+
+**1. What did you use AI for across the four sections?**
+
+- **Section 1:** I used AI mainly for structured questioning and pressure-testing rather than generating the design. It asked targeted questions about the component structure, state, data fetching, caching, accessibility, and styling, then challenged vague reasoning or conflicts so I had to make and defend the final design decisions myself.
+
+- **Section 2:** I used AI more directly as a coding and debugging assistant. AI generated much of the initial implementation, including services, components, interceptors, and the RxJS pipeline, while I ran the code, inspected the actual errors, and worked through fixes with AI, which included the ESLint version mismatch, Husky shebang problem, and file-nesting path errors. I also asked for explanations of concepts such as `switchMap` cancellation, `inject()` versus constructor injection, and `ngOnInit` versus the constructor before proceeding, so I understood the code I was using and could explain the implementation.
+
+- **Section 3:** I used AI primarily as a CI/CD and deployment guide, providing the initial GitHub Actions configuration and Vercel deployment settings. I was responsible for running the commands, checking the actual CI outputs, and diagnosing issues as they appeared, including formatting and lint failures. I used AI to interpret those results and guide the fixes, but verified each change through the actual build and CI process before moving forward.
+
+**2. Which tools did you use, and how did the workflow run?**
+
+I used Claude as an AI assistant, working conversationally rather than through a structured framework. The workflow followed the assessment sections: in Section 1, AI acted more like a structured interviewer, asking questions one at a time and challenging me to make and defend the design decisions before moving forward. In Section 2, the process changed to generate, run, and verify — I requested specific code, ran it locally, and brought the actual errors or unexpected behaviour back into the conversation so we could debug them together. Section 3 followed the same approach for CI/CD and deployment, with AI providing configuration and guidance while I ran the commands and verified the results from the real environment.
+
+**3. Give one example where an AI suggestion improved your work.**
+
+One AI suggestion that improved my work was challenging my original modal-panel and overlay-sidebar approach for item details against the accessibility and shareable-route requirements. I prompted AI by asking whether the proposed design would properly satisfy the keyboard-accessibility and 360px requirements, and that led me to change the design to a full-page item detail view with a push-sidebar, which was a better fit for the requirements and easier to use accessibly.
+
+**4. Give one example where AI output was wrong, incomplete or subtly bad, and how you caught it.**
+
+One AI-generated solution I initially accepted turned out to have a subtle bug in the search retry flow. The suggested RxJS pipeline used `distinctUntilChanged`, which looked reasonable because it prevented unnecessary repeated searches, but it also meant that retrying the same search value could be silently ignored because the value had not changed. I caught this by thinking through what would happen when a request failed and the user tried the retry action, rather than relying on the code simply looking correct. I then adjusted the pipeline so a retry could trigger a new request even when the search term itself had not changed.
+
+**5. Name two decisions you made without AI, and why you trusted your own judgment there.**
+
+- Combining category and search: I initially chose to allow category filtering and text search to work together because, from my own reading of the stock-management scenario, that seemed like the most useful experience for finding products. I trusted that judgment because it came from how I understood the user's needs before discovering that the mock API could not support the combination.
+
+- Disabling rather than hiding search: When a category is active, I chose to disable the search box rather than hide it. I felt this was more honest and understandable for the user because the feature remains visible but clearly unavailable, instead of disappearing and making the interface look inconsistent or suggesting that search is not part of the application.
+
+**6. Point us at one part of your codebase you would struggle to defend.**
+
+The part of the codebase I would struggle most to defend is the RxJS pipeline in `item-list.ts`, particularly the use of `combineLatest` and `switchMap` to coordinate search, category, sorting, pagination, and retries. I understand what the pipeline is doing and why those operators are used, but it took several rounds of debugging to get the behaviour right, so I would currently struggle to rebuild or explain every part of it confidently without referring back to the implementation and documentation.
+
+**Time spent:** Approximately 8 hours total, across multiple sessions (not done continuously): brief review (~10 min), Section 1 design (~1 hr), project scaffolding and tooling setup (~1 hr), Section 2 build and debugging (~2.5 hr), CI/CD setup and fixes (~1.5 hr), header/logout addition (~15 min), and README writing including this reflection (~1.5 hr).

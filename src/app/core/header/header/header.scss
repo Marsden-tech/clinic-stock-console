@@ -1,3 +1,15 @@
+mat-toolbar {
+  position: relative;
+}
+
+.app-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .spacer {
   flex: 1 1 auto;
 }

@@ -34,7 +34,9 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 12px;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 
   &:hover,
   &:focus-visible {

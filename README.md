@@ -1,3 +1,5 @@
+# Clinic Stock Console
+
 ## Running locally
 
 **Prerequisites:** Node.js 22+ and npm.

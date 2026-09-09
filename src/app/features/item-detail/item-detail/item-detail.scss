@@ -1,0 +1,23 @@
+.item-detail-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.item-detail-container img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.mock-api-note {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 12px;
+}
+
+.error-message {
+  color: #c62828;
+}

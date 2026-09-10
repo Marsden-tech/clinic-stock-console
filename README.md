@@ -108,6 +108,8 @@ I use native controls where possible, such as a standard select for sorting. Sin
 
 - **Category and search cannot be used together:** The mock API does not provide a single endpoint that supports both category filtering and text search simultaneously. I resolved this by giving category filtering priority; when a category is selected, search is disabled to avoid sending an unsupported combination of parameters.
 
+- **Product endpoints do not enforce token expiry:** Although `POST /auth/login` correctly issues a JWT that expires after the requested `expiresInMins`, and `GET /auth/me` correctly rejects an expired token (confirmed by decoding the JWT's `exp` claim and by testing directly against `/auth/me`, which returns `{"message": "Token Expired!"}`), the `/products` endpoints used by this app do not perform the same validation and continue to accept requests with an expired access token. This meant the app's 401-handling and redirect-with-return logic could not be triggered organically through normal use of the stock console. I verified the logic is correctly implemented by manually testing it against `/auth/me` instead.
+
 ## Section 3: Deployment & CI/CD
 
 **Public URL:** https://clinic-stock-console.vercel.app/
